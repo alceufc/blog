@@ -1,0 +1,112 @@
+<p>The distribution of a variable (i.e. how frequent are its values) is a very useful tool to understand the behavior of a given dataset. In my case, I was exploring this <a href="http://snap.stanford.edu/data/web-Reddit.html" target="_blank">reddit dataset</a> and trying to see how the upvotes of different submissions are distributed.</p>
+
+<p>Although gnuplot is a great tool to visualize data, plotting distribution of variables from external files is not very intuitive. To plot the distribution in linear axes we can use the <b>smooth frequency</b> option:</p>
+
+<blockquote class="tr_bq">
+# Configure the output<br />
+set terminal png<br />
+set output "dist_linear_axes.png"<br />
+<br />
+# Define a bin() function to aggregate close x-values.<br />
+bin_width = 5<br />
+bin(x) = bin_width * floor(x / bin_width)<br />
+<br />
+# Apply the bin() function and save result to "temp.dat"<br />
+set table "temp.dat"<br />
+plot "data.dat" using (bin($1)):(1.0)<br />
+unset table<br />
+<br />
+# Plot the result using linear scale.<br />
+set xlabel "Number of Upvotes"<br />
+set ylabel "Count"<br />
+set nokey<br />
+plot "temp.dat" using 1:2 smooth frequency with points
+</blockquote>
+
+<p>First I define a bin() function to group close x values. In
+this example I have used a bin width of 5. That means, for example, that values
+2 and 4 will be grouped into the same bin. Intuitively, the next step would be
+to use the plot command as follows:</p>
+
+<blockquote class="tr_bq">
+plot "temp.dat" using (bin($1):(1.0) smooth frequency with points
+</blockquote>
+
+<p>However this will not work as expected. The reason is that gnuplot will first group x values and only after that apply the bin() function. Instead, we want to apply the bin() function before smooth frequency groups the x values. To achieve this result I have applied the bin() function and saved the results to temporary file ("temp.dat") using the set table command. The final result will look like this:</p>
+
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;">
+  <tbody>
+    <tr><td style="text-align: center;">
+      <a href="http://3.bp.blogspot.com/-Mki8Ou0zBqQ/UqoUO5a_QcI/AAAAAAAAGqw/WOtqSOPgyWo/s1600/dist_linear_axes.png" imageanchor="1" style="margin-left: auto; margin-right: auto;">
+        <img border="0" src="http://3.bp.blogspot.com/-Mki8Ou0zBqQ/UqoUO5a_QcI/AAAAAAAAGqw/WOtqSOPgyWo/s400/dist_linear_axes.png" height="300" width="400" />
+      </a>
+    </td></tr>
+    <tr>
+      <td class="tr-caption" style="text-align: center;">Distribution in linear axes (it does not look very nice!)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As we can see, the result does not look very good. Most of
+the points got clustered in the bottom of the plot. The reason is that the
+range of x and y values is big and does not allows us to see the shape of the
+distribution. Often, when we have variables that span a big range of values, it
+is useful to use log scale axes.</p>
+
+<h2>Log scale axes</h2>
+
+<p>We can tell gnuplot to use log scales axes by using the set <b>logscale</b> command:</p>
+
+<blockquote class="tr_bq">set logscale xy</blockquote>
+
+<p>However, in this case (plotting distributions) we have a
+little problem: gnuplot applies the log function to the x and y values before
+applying the <b>using smooth</b> option. Since in our case the y values are all 1 and
+log(1) = 0, the count for each bin will also be zero.</p>
+
+<p>We can solve this problem by using a second temporary file.
+First we save the results from smooth frequency options and then we tell
+gnuplot to use the log scale:</p>
+
+<blockquote class="tr_bq">
+# Configure the output<br />
+set terminal png<br />
+set output "dist_log_axes.png"<br />
+<br />
+# Define a bin() function to aggregate close x-values.<br />
+bin_width = 5<br />
+bin(x) = bin_width * floor(x / bin_width)<br />
+<br />
+# Apply the bin() function and save result to "temp.dat"<br />
+set table "temp.dat"<br />
+plot "data.dat" using (bin($1)):(1.0)<br />
+unset table<br />
+<br />
+# Apply smooth frequency and save result to "temp2.dat"<br />
+set table "temp2.dat"<br />
+plot "temp.dat" using 1:2 smooth frequency with points<br />
+unset table<br />
+<br />
+# Plot the result using log scale.<br />
+set xlabel&nbsp; "Number of Upvotes"<br />
+set ylabel "Count"<br />
+set nokey<br />
+set logscale xy<br />
+plot "temp2.dat" using 1:2 with points
+</blockquote>
+
+
+<p>And here is the resulting plot:</p>
+
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;">
+  <tbody>
+    <tr><td style="text-align: center;">
+      <a href="http://1.bp.blogspot.com/-i-vYqKHwYgw/UqoWC6mLSAI/AAAAAAAAGq8/hQni_5Dom8E/s1600/dist_log_axes.png" imageanchor="1" style="margin-left: auto; margin-right: auto;">
+        <img border="0" src="http://1.bp.blogspot.com/-i-vYqKHwYgw/UqoWC6mLSAI/AAAAAAAAGq8/hQni_5Dom8E/s400/dist_log_axes.png" height="300" width="400" />
+      </a>
+    </td></tr>
+    <tr>
+      <td class="tr-caption" style="text-align: center;">Distribution using log axes.</td>
+    </tr>
+  </tbody>
+</table>
