@@ -44,13 +44,13 @@ URL:      www.noaesthetic.com
 
    <Group description="Blog Title" selector=".header h1">
      <Variable name="header.font" description="Title Font" type="font"
-         default="normal normal 36px Arial, Tahoma, Helvetica, FreeSans, sans-serif" value="normal normal 36px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+         default="normal normal 36px Arial, Tahoma, Helvetica, FreeSans, sans-serif" value="normal normal 42px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
      <Variable name="header.text.color" description="Text Color" type="color" default="#ffffff"  value="#ffffff"/>
    </Group>
 
    <Group description="Tabs Text" selector=".tabs-inner .widget li a">
      <Variable name="tabs.font" description="Font" type="font"
-         default="normal normal 15px Arial, Tahoma, Helvetica, FreeSans, sans-serif" value="normal normal 15px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+         default="normal normal 15px Arial, Tahoma, Helvetica, FreeSans, sans-serif" value="normal normal 20px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
      <Variable name="tabs.text.color" description="Text Color" type="color" default="#ffffff" value="#ffffff"/>
      <Variable name="tabs.selected.text.color" description="Selected Color" type="color" default="$(link.color)" value="#336699"/>
    </Group>
@@ -63,7 +63,7 @@ URL:      www.noaesthetic.com
 
    <Group description="Post Title" selector="h3.post-title, .comments h4">
      <Variable name="post.title.font" description="Title Font" type="font"
-         default="normal normal 18px Arial, Tahoma, Helvetica, FreeSans, sans-serif" value="normal normal 18px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+         default="normal normal 18px Arial, Tahoma, Helvetica, FreeSans, sans-serif" value="normal normal 24px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
    </Group>
 
    <Group description="Date Header" selector=".date-header">
@@ -387,6 +387,14 @@ h3.post-title {
   position: relative;
 }
 
+.post-body {
+  line-height: 1.4;
+  font-size: 150%;
+  font-family: "Times New Roman", Times, serif;
+  position: relative;
+}
+
+
 .post-header {
   margin: 0 0 1.5em;
 
@@ -568,9 +576,25 @@ html .mobile .mobile-date-outer, html .mobile .blog-pager {
 .mobile .tabs-inner .PageList .widget-content .pagelist-arrow {
   border-$startSide: 1px solid $(tabs.separator.color);
 }
+
 blockquote {
 margin: 0 10px;
 padding: 10px 10px 10px 10px;
+border-top: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-left: 1px solid #ddd;
+border-bottom: 1px solid #ddd;
+font-family: Courier New, Courier, monospace;
+font-size: 0.7em;
+word-wrap: break-word;
+background-color:#f3f3f3;
+overflow: hidden;
+border-radius: 5px;
+}
+
+code {
+margin: 0 0px;
+padding: 0.2em 0.2em 0.2em 0.2em;
 border-top: 1px solid #ddd;
 border-right: 1px solid #ddd;
 border-left: 1px solid #ddd;
@@ -580,6 +604,13 @@ font-size: 0.9em;
 word-wrap: break-word;
 background-color:#f3f3f3;
 overflow: hidden;
+border-radius: 5px;
+}
+
+
+td.tr-caption {
+    font-size: 90%;
+    color: #555555;
 }
 
 blockquote p {
@@ -599,7 +630,7 @@ color: black;
     <b:template-skin>
       <b:variable default='960px' name='content.width' type='length'/>
       <b:variable default='0' name='main.column.left.width' type='length'/>
-      <b:variable default='310px' name='main.column.right.width' type='length'/>
+      <b:variable default='310px' name='main.column.right.width' type='length' value='250px'/>
 
       <![CDATA[
       body {
@@ -2102,7 +2133,7 @@ head.appendChild(script);
 </macro:includable>
 
 <b:section-contents id='sidebar-right-1'>
-  <b:widget id='Profile1' locked='false' title='About Me' type='Profile'>
+  <b:widget id='Profile1' locked='false' title='' type='Profile'>
     <b:includable id='main'>
     <b:if cond='data:title != &quot;&quot;'>
       <h2><data:title/></h2>
