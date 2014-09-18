@@ -23,7 +23,7 @@
 
 <h2>Downloading the image set</h2>
 
-<p>In order to classify texture images, we will use as example the <a href="http://www-cvr.ai.uiuc.edu/ponce_grp/data/" target="_blank">Textured Surfaces Dataset</a> from Prof. Jean Ponce's research group. Just click on link and search for "Texture Database". Then download the 5 provided zip files (~40MB each).</p>
+<p>In order to classify texture images, we will use as example the <a href="http://www-cvr.ai.uiuc.edu/ponce_grp/data/" target="_blank">Textured Surfaces Dataset</a> from Prof. Jean Ponce's research group. Just click on the link and search for "Texture Database". Then download the 5 provided zip files (~40MB each).</p>
 
 <p>Unzip all the images into a single <code>imgs</code> directory. We we will also use a text file (<a href="https://docs.google.com/file/d/0ByOACbBQiCq4YzRwQjN1YUNHdlU/edit?usp=sharing" target="_blank">image_class.txt</a>) where each line contains the file name of each image and the corresponding class. Organize the images and image_class.txt under the following directory structure:</p>
 
@@ -73,9 +73,11 @@ imgListFile = fopen('image_class.txt', 'r');<br />F = zeros(1000, 24); L = cell(
 
 <h2>Classification</h2>
 
-<p>The <code>nb</code> classifier can be used to classify an image <code>Itest</code> using the following command:</p>
+<p>The <code>nb</code> classifier can be used to classify an image <code>Itest</code> using the following commands:</p>
 
 <blockquote class="tr_bq">
-&gt;&gt; predict(nb, Itest)<br />
+&gt;&gt; Itest = imread(testImagePath)<br />
+&gt;&gt; features = sfta(Itest, 4)<br />
+&gt;&gt; predict(nb, features)<br />
 ans = "knit"
 </blockquote>
